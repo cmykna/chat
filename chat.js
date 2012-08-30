@@ -1,17 +1,8 @@
 var _ = require('underscore')
   , net = require('net')
-  , chat_server = net.createServer()
-  , clients = [];
 
-function broadcast (message, client) {
-  var i = 0
-    , clen = clients.length;
-  for (i; i < clen; i++) {
-    if (client !== clients[i]) {
-      clients[i].write(client.name + " says " + message);
-    }
-  }
-}
+var chat_server = net.createServer()
+  , clients = [];
 
 chat_server.on('connection', function (client) {
   var addr = client.remoteAddress
@@ -26,3 +17,11 @@ chat_server.on('connection', function (client) {
 });
 
 chat_server.listen(9000);
+
+function broadcast (message, sender) {
+  _.each(clients, function(receiver) {
+    if (receiver !== sender) {
+      receiver.write(sender.name + " says: " + message);
+    }
+  });
+}
