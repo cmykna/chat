@@ -3,20 +3,26 @@ var _ = require('underscore')
   , chat_server = net.createServer()
   , clients = [];
 
+function broadcast (message, client) {
+  var i = 0
+    , clen = clients.length;
+  for (i; i < clen; i++) {
+    if (client !== clients[i]) {
+      clients[i].write(client.name + " says " + message);
+    }
+  }
+}
+
 chat_server.on('connection', function (client) {
+  var addr = client.remoteAddress
+    , port = client.remotePort;
+
+  client.name = '<' + addr + ':' + port + '>';
   client.write('Hi!\n');
   clients.push(client);
   client.on('data', function (data) {
-    // var i = 0
-    //   , number_of_clients = client_list.length;
-    // for (i; i < number_of_clients; i++) {
-    //     client_list[i].write(data);
-    // }
-    _.each(clients, function (client) {
-      client.write(data);
-    }, data);
+    broadcast(data, client);
   });
-  // client.end();
 });
 
 chat_server.listen(9000);
