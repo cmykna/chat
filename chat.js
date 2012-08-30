@@ -9,7 +9,7 @@ var critters;
 
 fs.readFile('critters', function(err, data) {
   if (err) throw err;
-  critters = new Buffer(data).toString('ascii').split('\n\n');
+  critters = new Buffer(data).toString('ascii').split('\n+\n');
 });
 
 function sendBroadcast (message, sender) {
