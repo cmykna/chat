@@ -29,7 +29,7 @@ chat_server.on('connection', function (client) {
     , port = client.remotePort
     , critter = getRandomCritter();
 
-  client.name = '<' + addr + ':' + port + '>';
+  client.name = ['<', addr, ':', port, '>'].join('');
   client.write(critter + '\n');
   client.write('Hi!\n');
   clients.push(client);
