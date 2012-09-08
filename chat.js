@@ -54,7 +54,7 @@ chat_server.on('connection', function (client) {
 
   client.on('data', function (data) {
     // don't send anything if it's just a blank line
-    !(data[0] === 13 && data.length === 2) && sendBroadcast(data, client);
+    ! (data[0] === 13 && data.length === 2) && sendBroadcast(data, client);
   });
 
   client.on('end', function () {
